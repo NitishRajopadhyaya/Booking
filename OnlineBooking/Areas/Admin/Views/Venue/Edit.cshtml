@@ -1,0 +1,59 @@
+﻿@model Models.Futsal.models.VenueModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="VenueId" hidden="hidden" />
+            <div class="form-group">
+                <label asp-for="VenueName" class="control-label"></label>
+                <input asp-for="VenueName" class="form-control" />
+                <span asp-validation-for="VenueName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueNameNepali" class="control-label"></label>
+                <input asp-for="VenueNameNepali" class="form-control" />
+                <span asp-validation-for="VenueNameNepali" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueLength" class="control-label"></label>
+                <input asp-for="VenueLength" class="form-control" />
+                <span asp-validation-for="VenueLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueWidth" class="control-label"></label>
+                <input asp-for="VenueWidth" class="form-control" />
+                <span asp-validation-for="VenueWidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueTypeId" class="control-label"></label>
+                <input asp-for="VenueTypeId" class="form-control" />
+                <span asp-validation-for="VenueTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueDescription" class="control-label"></label>
+                <input asp-for="VenueDescription" class="form-control" />
+                <span asp-validation-for="VenueDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsVenueActive" /> @Html.DisplayNameFor(model => model.IsVenueActive)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

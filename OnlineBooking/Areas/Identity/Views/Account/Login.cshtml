@@ -1,0 +1,59 @@
+﻿@model Models.Identity.LoginViewModel
+
+<div class="card-body">
+    <p class="login-box-msg">Sign in to start your session</p>
+
+    <form asp-area="Identity" asp-controller="Account" asp-action="Login" method="post">
+        <div class="input-group mb-3">
+            <input type="email" asp-for=Email autocomplete="username" class="form-control" aria-required="true" placeholder="name@example.com">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+           <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="input-group mb-3">
+            <input type="password" asp-for=Password class="form-control" autocomplete="current-password" aria-required="true" placeholder="password">
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="icheck-primary">
+                    <input type="checkbox" asp-for="RememberMe" id="remember">
+                    <label for="remember">
+                        Remember Me
+                    </label>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary btn-block">Log in</button>
+            </div>
+            <!-- /.col -->
+        </div>
+    </form>
+
+    <div class="social-auth-links text-center mt-2 mb-3">
+        <a href="#" class="btn btn-block btn-primary">
+            <i class="fab fa-facebook mr-2"></i> Log in using Facebook
+        </a>
+        <a href="#" class="btn btn-block btn-danger">
+            <i class="fab fa-google-plus mr-2"></i> Log in using Google+
+        </a>
+    </div>
+    <!-- /.social-auth-links -->
+
+    <p class="mb-1">
+        <a href="forgot-password.html">I forgot my password</a>
+    </p>
+    <p class="mb-0">
+        @*<a asp-area="Identity" asp-controller="Account" asp-action="Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>*@
+        <a href="/Identity/Account/Register" class="text-center">Register a new membership</a>
+    </p>
+</div>

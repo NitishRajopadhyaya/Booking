@@ -1,0 +1,81 @@
+﻿@{
+    Layout = "_LayoutCalendar";
+
+}
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-body p-0">
+                        <!-- THE CALENDAR -->
+                        <div id="calendar">
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var d = new Date().getDate();
+        console.log(d);
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialDate: moment().format('YYYY-MM-DD'),
+            initialView: 'dayGridMonth',
+            nowIndicator: true,
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            selectable: true,
+            selectMirror: true,
+            dayMaxEvents: true, // allow "more" link when too many events
+            events: function (fetchInfo, successCallback, failureCallback) {
+                $.ajax({
+                    method: "GET",
+                    url: "/api/v1/GetEvents",
+                    traditional: true,
+                    contentType: "application/json charset=utf-8",
+                    success: function (dataDB) {
+                        var events = Array();
+                        $.each(dataDB.data, function (i, v) {
+                            var startD = moment(v.dateSchedule).format("YYYY-MM-DD");
+                            var endD = moment(v.dateSchedule).format("YYYY-MM-DD");
+                            const startDate = startD.concat("T", v.startTime, ":00");
+                            const endDate = endD.concat("T", v.endTime, ":00");
+                            console.log(startDate, " - ", endDate)
+                            events.push({
+                                title: v.title,
+                                start: startDate,
+                                end: endDate,
+                                backgroundColor: '#00a65a', //Success (green)
+                                borderColor: '#00a65a' //Success (green)
+                            });
+                        });
+                        successCallback(events);
+                    },
+                    error: function (error) {
+                        alert('failed');
+                    }
+                });
+            }
+        });
+        calendar.render();
+    });
+
+
+
+
+</script>

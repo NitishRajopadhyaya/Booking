@@ -1,0 +1,109 @@
+﻿@await Component.InvokeAsync("Banner")
+@model Models.Futsal.models.Booking.VenueBookingTimeModel
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                @await Component.InvokeAsync("BookingTime",new{Model.VenueId})
+                <span hidden="hidden" id="hBookingprice">@Model.Price</span>
+                <div class="bp" style="display:none">
+                    <span class="" style="float:right;font-size:40px;">
+                        Rs
+                        <strong id="Bookingprice">@Model.Price</strong>
+                    </span>
+                </div>
+                <div class="col-lg-12 col-xl-2">
+                    <input type="button" onclick="BookVenueNow()" class="btn btn-primary rounded" value="Book Now">
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="mb-4">
+                    <div class="slide-one-item home-slider owl-carousel">
+                        <div><img src="~/theme/image/indoor_footbal_pitch-840x439-1.jpg" alt="Image" class="img-fluid"></div>
+                        <div><img src="~/theme/image/indoor_footbal_pitch-840x439-1.jpg" alt="Image" class="img-fluid"></div>
+                        <div><img src="~/theme/image/indoor_footbal_pitch-840x439-1.jpg" alt="Image" class="img-fluid"></div>
+                        <div><img src="~/theme/image/indoor_footbal_pitch-840x439-1.jpg" alt="Image" class="img-fluid"></div>
+                    </div>
+                </div>
+                <h4 class="h5 mb-4 text-black">Description</h4>
+                <p>@Model.VenueDescription</p>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bookingPriceheader {
+        padding: 35px;
+        padding-top: 0px;
+        display: block !important
+    }
+    /* .show-price {
+                    display:block!important
+
+                }*/
+</style>
+
+@section Scripts {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var today = new Date().toISOString().split('T')[0];
+            document.getElementsByName("bookingdatepicker")[0].setAttribute('max', today);
+        })
+        var selectedValues = [];
+        $('.row .categoryTime .selectTime').click(function (event) {
+            var p = $("#hBookingprice").html();
+            var selectedValue = $(event.target).text();
+            if ($(event.target).hasClass('selected')) {
+                // Remove value from selectedValues array if already selected
+                selectedValues.splice(selectedValues.indexOf(selectedValue), 1);
+                $(event.target).removeClass('selected');
+                $(event.target).removeClass('categoryTimeSelect');
+                $(".bp").removeClass("bookingPriceheader");
+
+            } else {
+                // Add value to selectedValues array if not already selected
+                selectedValues.push(selectedValue);
+                $(event.target).addClass('selected');
+                $(event.target).addClass('categoryTimeSelect');
+                $(".bp").addClass("bookingPriceheader");
+            }
+            if (selectedValues.length > 0) {
+                $("#Bookingprice").html(selectedValues.length * p);
+                $(".bp").addClass("bookingPriceheader");
+            };
+        });
+
+        function BookVenueNow() {
+            var price = $("#Bookingprice").html();
+            var time = selectedValues;
+            var dateSchedule = $("#bookingdatepicker1").val();
+
+            //check if null value
+
+            var data = { ScheduleTime: time,venueId:@Model.VenueId, DateSchedule: dateSchedule, Price: price };
+            var schedulemodel = JSON.stringify(data);
+            console.log(schedulemodel);
+          
+            $.ajax({
+                method: "POST",
+                url: "/api/v1/CreateBookingSchedule",
+                data: schedulemodel,
+                traditional: true,
+                contentType: "application/json charset=utf-8",
+                 //Headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                success: function (result) {
+                  // Book Now with payment Gateway
+                },
+                error: function (e) {
+                    alert('Error' + JSON.stringify(e));
+                }
+            })
+        }
+
+    </script>
+
+
+
+}
+

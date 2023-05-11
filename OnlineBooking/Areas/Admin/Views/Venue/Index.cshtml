@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Models.Futsal.models.VenueModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+          @*  <h3 class="cardcard-title">test</h3>*@
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Venue Name</th>
+                            <th>Venu Name Nepali</th>
+                            <th>Venu Length</th>
+                            <th>Venue Width</th>
+                            <th>Venue Type</th>
+                            <th>Venue Description</th>
+                            <th>IsActive</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VenueName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VenueNameNepali)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VenueLength)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VenueWidth)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VenueTypeId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.VenueDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsVenueActive)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "Edit", new {  VenueId=item.VenueId}) |
+                                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+

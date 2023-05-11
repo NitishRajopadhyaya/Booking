@@ -1,0 +1,65 @@
+﻿@model Models.Common.Models.Users.RegisterViewModel
+
+
+<div class="card-body">
+    <p class="login-box-msg">Register a new membership(User)</p>
+
+    <form asp-area="Identity" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+
+
+        <div class="input-group mb-3">
+            @Html.TextBoxFor(x => x.PhoneNumber, new { @placeholder = "Enter Phone Number", @class = "form-control" })
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-phone"></span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(x => x.PhoneNumber)
+        </div>
+
+        <div class="input-group mb-3">
+            @Html.TextBoxFor(x => x.Email, new { @placeholder = "Enter Email Address", @class = "form-control" })
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(x => x.Email)
+        </div>
+
+        <div class="input-group mb-3">
+            @Html.PasswordFor(x => x.Password, new { @placeholder = "********", @class = "form-control" })
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(x => x.Password)
+        </div>
+        <div class="input-group mb-3">
+            @Html.PasswordFor(x => x.ConfirmPassword, new { @placeholder = "********", @class = "form-control" })
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(x => x.ConfirmPassword)
+        </div>
+        <div class="row">
+            <div class="col-8">
+                <div class="icheck-primary">
+                    <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                    <label for="agreeTerms">
+                        I agree to the <a href="#">terms</a>
+                    </label>
+                </div>
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+            </div>
+        </div>
+    </form>
+
+    <a href="login" class="text-center">I already have a membership</a>
+</div>

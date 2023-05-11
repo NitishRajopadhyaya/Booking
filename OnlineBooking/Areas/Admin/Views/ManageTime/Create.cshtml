@@ -1,0 +1,387 @@
+﻿@model Models.Futsal.models.ManageTimeModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Opening/Closing Time Rule</h3>
+    </div>
+    <form asp-action="Create">
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            <div class="row">
+                <div col-md-4>
+                    <div class="form-group">
+                        <label asp-for="VenueId" class="control-label">Venue Name</label>
+                        @Html.DropDownListFor(x => x.VenueId, (new SelectList(@ViewBag.VenuList, "VenueId", "VenueName")), new { @class = "form-control select2" })
+                        <span asp-validation-for="VenueId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label">Price</label>
+                        @Html.TextBoxFor(x => x.Price,  new { @class = "form-control select2" })
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="card">
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <!-- we are adding the accordion ID so Bootstrap's collapse plugin detects it -->
+                            <div id="accordion">
+                                <div class="card card-success">
+                                    <div class="card-header">
+                                        <h4 class="card-title w-100">
+                                            <a class="d-block w-100" data-toggle="collapse" href="#collapseOne">
+                                                <span>SUNDAY</span>
+                                            </a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                        <div class="card-body">
+                                            <div class="row form-group">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label asp-for="manageDayTime.SunStartDateTime" class="control-label">Start Time</label>
+                                                        <input asp-for="manageDayTime.SunStartDateTime" id="datetimepicker5" type="time" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label asp-for="manageDayTime.SunEndDateTime" class="control-label"></label>
+                                                        <input asp-for="manageDayTime.SunEndDateTime" type="time" class="form-control" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Range</label>
+                                                        @Html.DropDownListFor(x => x.manageDayTime.SunRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label class="control-label">
+                                                            <input type="checkbox" id="checkbox" />
+                                                            Customize Timing
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card" id="customTimining">
+                                                <div class="card-body" id="customTimeCardBody">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-5">
+                                                            <label asp-for="manageDayTime.SunStartDateTime" class="control-label">Start Time</label>
+                                                            <input asp-for="manageSundayMultipleTimes[0].SunStartDateTime" id="datetimepicker5" type="time" class="form-control" />
+                                                        </div>
+                                                        <div class="col-md-5">
+                                                            <label asp-for="manageDayTime.SunEndDateTime" class="control-label"></label>
+                                                            <input asp-for="manageSundayMultipleTimes[0].SunEndDateTime" type="time" class="form-control" />
+                                                        </div>
+                                                        <div class="col-md-1">
+                                                            <label>Add</label>
+                                                            <button type="button" onclick="NewRow()" class="btn btn-default form-control">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100" data-toggle="collapse" href="#collapseTwo">
+                                            MONDAY
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.MonStartDateTime" class="control-label">Start Time</label>
+                                                    <input asp-for="manageDayTime.MonStartDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.MonEndDateTime" class="control-label"></label>
+                                                    <input asp-for="manageDayTime.MonEndDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+
+                                                    <label class="control-label">Range</label>
+                                                    @Html.DropDownListFor(x => x.manageDayTime.MonRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
+                                            TUESDAY
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.TueStartDateTime" class="control-label">Start Time</label>
+                                                    <input asp-for="manageDayTime.TueStartDateTime" type="time" class="form-control" />
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.TueEndDateTime" class="control-label"></label>
+                                                    <input asp-for="manageDayTime.TueEndDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+
+                                                    <label class="control-label">Range</label>
+                                                    @Html.DropDownListFor(x => x.manageDayTime.TueRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100" data-toggle="collapse" href="#collapseFour">
+                                            WEDNESDAY
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseFour" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.WedStartDateTime" class="control-label">Start Time</label>
+                                                    <input asp-for="manageDayTime.WedStartDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.WedStartDateTime" class="control-label"></label>
+                                                    <input asp-for="manageDayTime.WedEndDateTime" type="time" class="form-control" />
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+
+                                                    <label class="control-label">Range</label>
+                                                    @Html.DropDownListFor(x => x.manageDayTime.WedRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100" data-toggle="collapse" href="#collapseFive">
+                                            THURSDAY
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseFive" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.ThurStartDateTime" class="control-label">Start Time</label>
+                                                    <input asp-for="manageDayTime.ThurStartDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.ThurEndDateTime" class="control-label"></label>
+                                                    <input asp-for="manageDayTime.ThurEndDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+
+                                                    <label class="control-label">Range</label>
+                                                    @Html.DropDownListFor(x => x.manageDayTime.ThurRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100" data-toggle="collapse" href="#collapseSix">
+                                            FRIDAY
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseSix" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.FriStartDateTime" class="control-label">Start Time</label>
+                                                    <input asp-for="manageDayTime.FriStartDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.FriEndDateTime" class="control-label"></label>
+                                                    <input asp-for="manageDayTime.FriEndDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Range</label>
+                                                    @Html.DropDownListFor(x => x.manageDayTime.FriRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-success">
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100" data-toggle="collapse" href="#collapseSeven">
+                                            SATURDAY
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseSeven" class="collapse" data-parent="#accordion">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.SatStartDateTime" class="control-label">Start Time</label>
+                                                    <input asp-for="manageDayTime.SatStartDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="manageDayTime.SatEndDateTime" class="control-label"></label>
+                                                    <input asp-for="manageDayTime.SatEndDateTime" type="time" class="form-control" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Range</label>
+                                                    @Html.DropDownListFor(x => x.manageDayTime.SatRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsActive" />
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+<script>
+    var i = 0;
+    $('#customTimining').hide();
+    const checkbox = document.getElementById('checkbox');
+    const div = document.getElementById('customTimining');
+
+    checkbox.addEventListener('click', function () {
+        if (checkbox.checked) {
+            $('#customTimining').show();
+        } else {
+            $('#customTimining').hide();
+        }
+    });
+    
+    var NewRow = function () {
+        i = i + 1;
+        var row = '<div class="row form-group">'+
+                        '<div class="col-md-5" >'+
+                                '<label asp-for= "manageDayTime.SunStartDateTime" class= "control-label" > Start Time </label>'+
+                                '<input name= "manageSundayMultipleTimes['+i+'].SunStartDateTime" id = "'+i+'s" type = "time" class="form-control" />'+
+                        '</div>'+
+                        '<div class="col-md-5">'+
+                                 '<label asp-for= "manageDayTime.SunEndDateTime" class= "control-label" >SunEndDateTime</label>'+
+                                  '<input name= "manageSundayMultipleTimes['+i+'].SunEndDateTime" id = "'+i+'e" type = "time" class= "form-control" />'+
+                       '</div>'+
+                       '<div class="col-md-1">'+
+                                  '<label>Add</label>'+
+                                 '<button type="button" onclick="NewRow()" class="btn btn-default form-control">+</button>' +
+                       '</div>'+
+                       '<div class="col-md-1">'+
+                                  '<label>Delete</label>'+
+                                  '<button  id="'+i+'" type="buton" onclick="deleteRow(this,this.id)" class="btn btn-default form-control">-</button>'+
+                       '</div>'+
+                  '</div>';
+        $('#customTimeCardBody').append(row);
+        
+        }
+    var deleteRow=function(btn,id){
+        var integerNumber = parseInt(id, 10);
+        for (var j = integerNumber + 1; j <= i; j++)
+        {
+            var deleteid = document.getElementById(j);
+            var firstElement = document.getElementById(j+'s');
+            var secondElement = document.getElementById(j+'e');
+            if (firstElement && secondElement) {
+                deleteid.id=j-1;
+                firstElement.id=j-1+'s';
+                secondElement.id = j-1+'e';
+                firstElement.name = "manageSundayMultipleTimes["+(j-1)+"].SunStartDateTime";
+                secondElement.name = "manageSundayMultipleTimes["+(j-1)+"].SunEndDateTime";
+                }
+        }
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+        i=i-1;
+    }
+
+</script>
+@section Scripts {
+
+
+    @{
+
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

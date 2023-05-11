@@ -1,0 +1,67 @@
+﻿@model Models.Futsal.models.VenueModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title">Venue</h3>
+    </div>
+    <form asp-action="Create">
+        <div class="card-body">
+            @Html.AntiForgeryToken()
+            @*  @Html.HiddenFor(x=>x.VenueId)*@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="VenueName" class="control-label"></label>
+                <input asp-for="VenueName" class="form-control" />
+                <span asp-validation-for="VenueName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueNameNepali" class="control-label"></label>
+                <input asp-for="VenueNameNepali" class="form-control" />
+                <span asp-validation-for="VenueNameNepali" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueTypeId">Venue Type</label>
+                @Html.DropDownListFor(x=>x.VenueTypeId,new List<SelectListItem>
+                {
+                new SelectListItem{ Text="Futsal", Value = "1" },
+                new SelectListItem{ Text="Cricksal", Value = "2" }
+                },new {@class="form-control input-sm" })
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueLength" class="control-label"></label>
+                <input asp-for="VenueLength" class="form-control" />
+                <span asp-validation-for="VenueLength" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueWidth" class="control-label"></label>
+                <input asp-for="VenueWidth" class="form-control" />
+                <span asp-validation-for="VenueWidth" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VenueDescription" class="control-label"></label>
+                <input asp-for="VenueDescription" class="form-control" />
+                <span asp-validation-for="VenueDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsVenueActive" />
+                    @Html.DisplayNameFor(model => model.IsVenueActive)
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+
+       
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
