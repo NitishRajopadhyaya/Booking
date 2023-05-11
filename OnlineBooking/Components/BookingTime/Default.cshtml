@@ -1,0 +1,48 @@
+﻿
+<style>
+    .categoryTime {
+        margin-bottom: 0px;
+        border-radius: 7px;
+        position: relative;
+        background: #fff;
+        cursor: pointer;
+    }
+
+        .categoryTime .bookingTime {
+            display: inline-block;
+            padding: 5px 20px;
+            background: #e9ecef;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            color: #000;
+            font-weight: bold;
+        }
+
+    .timeList {
+        margin-top: 2rem !important
+    }
+
+    .categoryTime:hover span {
+        background: #30e3ca;
+    }
+    .categoryTimeSelect{
+        background: #30e3ca !important;
+    }
+
+</style>
+<div class="mb-4 timeList">
+    <div class="row">
+        <input type="date" name="bookingdatepicker" id="bookingdatepicker1" class=" form-control mb-4" />
+    </div>
+    <div></div>
+    <div class="row">
+        @foreach (var items in Model)
+        {
+            <div class= "d-block d-md-flex categoryTime col-md-4">
+                <span class="bookingTime selectTime">@items.ToString()</span>
+            </div>
+        }
+    </div>
+</div>
+
+
