@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models.Futsal.models.Booking
+{
+    public class VenueBookingTimeModel
+    {
+        public int VenueId { get; set; }
+        public int ManageDayTimeId { get; set; }
+        public int ManageTimeId { get; set; }
+        public string Venuename { get; set; }
+        public string VenueDescription { get; set; }
+        public double Price { get; set; }
+
+        public string SunStartDateTime { get; set; }
+        public string SunEndDateTime { get; set; }
+        public int SunRange { get; set; }
+
+        public string MonStartDateTime { get; set; }
+        public string MonEndDateTime { get; set; }
+        public int MonRange { get; set; }
+
+        public string TueStartDateTime { get; set; }
+        public string TueEndDateTime { get; set; }
+        public int TueRange { get; set; }
+
+        public string WedStartDateTime { get; set; }
+        public string WedEndDateTime { get; set; }
+        public int WedRange { get; set; }
+
+        public string ThurStartDateTime { get; set; }
+        public string ThurEndDateTime { get; set; }
+        public int ThurRange { get; set; }
+
+        public string FriStartDateTime { get; set; }
+        public string FriEndDateTime { get; set; }
+        public int FriRange { get; set; }
+
+        public string SatStartDateTime { get; set; }
+        public string SatEndDateTime { get; set; }
+        public int SatRange { get; set; }
+        public bool IsActive { get; set; }
+    }
+   
+    public class BookingTimeList
+    {
+        public string BookingTime { get; set; }
+    }
+}
