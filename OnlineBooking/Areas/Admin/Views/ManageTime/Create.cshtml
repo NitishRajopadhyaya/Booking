@@ -41,13 +41,13 @@
                                     <div id="collapseOne" class="collapse show" data-parent="#accordion">
                                         <div class="card-body">
                                             <div class="row form-group">
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" id="DefaultStartTime1">
                                                     <div class="form-group">
                                                         <label asp-for="manageDayTime.SunStartDateTime" class="control-label">Start Time</label>
                                                         <input asp-for="manageDayTime.SunStartDateTime" id="datetimepicker5" type="time" class="form-control" />
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-6" id="DefaultEndTime1">
                                                     <div class="form-group">
                                                         <label asp-for="manageDayTime.SunEndDateTime" class="control-label"></label>
                                                         <input asp-for="manageDayTime.SunEndDateTime" type="time" class="form-control" />
@@ -62,30 +62,32 @@
                                                 <div class="col-md-4">
                                                     <div class="form-group">
                                                         <label class="control-label">
-                                                            <input type="checkbox" id="checkbox" />
+                                                            <input type="checkbox" id="checkbox1" onchange="handleCheckBox(1,event)" />
                                                             Customize Timing
                                                         </label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="card" id="customTimining">
+                                            @await Component.InvokeAsync("CustomBookingTime",new{Dayid =1})
+                                           @* <div class="card" id="customTimining">
                                                 <div class="card-body" id="customTimeCardBody">
                                                     <div class="row form-group">
+                                                        <input type="hidden"  name="CustomTimings[0].Dayid" value="1" />
                                                         <div class="col-md-5">
                                                             <label asp-for="manageDayTime.SunStartDateTime" class="control-label">Start Time</label>
-                                                            <input asp-for="manageSundayMultipleTimes[0].SunStartDateTime" id="datetimepicker5" type="time" class="form-control" />
+                                                            <input asp-for="CustomTimings[0].StartTime" id="datetimepicker5" type="time" class="form-control" />
                                                         </div>
                                                         <div class="col-md-5">
                                                             <label asp-for="manageDayTime.SunEndDateTime" class="control-label"></label>
-                                                            <input asp-for="manageSundayMultipleTimes[0].SunEndDateTime" type="time" class="form-control" />
+                                                            <input asp-for="CustomTimings[0].EndTime" type="time" class="form-control" />
                                                         </div>
                                                         <div class="col-md-1">
                                                             <label>Add</label>
-                                                            <button type="button" onclick="NewRow()" class="btn btn-default form-control">+</button>
+                                                            <button type="button" onclick="NewRow(1)" class="btn btn-default form-control">+</button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -102,15 +104,15 @@
                                     <div class="card-body">
                                         <div class="row">
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" id="DefaultStartTime2">
                                                 <div class="form-group">
                                                     <label asp-for="manageDayTime.MonStartDateTime" class="control-label">Start Time</label>
                                                     <input asp-for="manageDayTime.MonStartDateTime" type="time" class="form-control" />
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6" id="DefaultEndTime2">
                                                 <div class="form-group">
-                                                    <label asp-for="manageDayTime.MonEndDateTime" class="control-label"></label>
+                                                    <label asp-for="manageDayTime.MonEndDateTime" class="control-label">End Time</label>
                                                     <input asp-for="manageDayTime.MonEndDateTime" type="time" class="form-control" />
                                                 </div>
                                             </div>
@@ -121,8 +123,16 @@
                                                     @Html.DropDownListFor(x => x.manageDayTime.MonRange, (new SelectList(@ViewBag.RangeList, "Text", "Value")), new { @class = "form-control select2" })
                                                 </div>
                                             </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        <input type="checkbox" id="checkbox2" onchange="handleCheckBox(2,event)" />
+                                                        Customize Timing
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
-
+                                         @await Component.InvokeAsync("CustomBookingTime",new{Dayid =2})
                                     </div>
                                 </div>
                             </div>
@@ -320,55 +330,76 @@
     </form>
 </div>
 <script>
-    var i = 0;
-    $('#customTimining').hide();
-    const checkbox = document.getElementById('checkbox');
-    const div = document.getElementById('customTimining');
-
-    checkbox.addEventListener('click', function () {
-        if (checkbox.checked) {
-            $('#customTimining').show();
-        } else {
-            $('#customTimining').hide();
+    $(document).ready(function(){
+        for(var loopcount=1;loopcount<8;loopcount++){
+            var CustomId = '#customTiming' + loopcount;
+            $(CustomId).hide();
         }
     });
     
-    var NewRow = function () {
+    var i = 0;
+    //$('#customTiming1').hide();
+    var handleCheckBox = function(checkBoxId,event){
+        var customId = '#customTiming' + checkBoxId;
+        var DefaultStartId = '#DefaultStartTime' + checkBoxId;
+        var DefaultEndId = '#DefaultEndTime' + checkBoxId;
+            if (event.target.checked) {
+                $(customId).show();
+                $(DefaultStartId).hide();
+                $(DefaultEndId).hide();
+            } else {
+                $(customId).hide();
+                $(DefaultStartId).show();
+            $(DefaultEndId).show();
+            }
+        
+    }
+    
+    
+    var NewRow = function (dayid) {
+
         i = i + 1;
         var row = '<div class="row form-group">'+
+                        '<input type="hidden" id="'+i+'d" name="CustomTimings['+i+'].Dayid" value="'+dayid+'" />'+
                         '<div class="col-md-5" >'+
                                 '<label asp-for= "manageDayTime.SunStartDateTime" class= "control-label" > Start Time </label>'+
-                                '<input name= "manageSundayMultipleTimes['+i+'].SunStartDateTime" id = "'+i+'s" type = "time" class="form-control" />'+
+                                '<input name= "CustomTimings['+i+'].StartTime" id = "'+dayid+i+'s" type = "time" class="form-control" />'+
                         '</div>'+
                         '<div class="col-md-5">'+
                                  '<label asp-for= "manageDayTime.SunEndDateTime" class= "control-label" >SunEndDateTime</label>'+
-                                  '<input name= "manageSundayMultipleTimes['+i+'].SunEndDateTime" id = "'+i+'e" type = "time" class= "form-control" />'+
+                                  '<input name= "CustomTimings['+i+'].EndTime" id = "'+dayid+i+'e" type = "time" class= "form-control" />'+
                        '</div>'+
                        '<div class="col-md-1">'+
                                   '<label>Add</label>'+
-                                 '<button type="button" onclick="NewRow()" class="btn btn-default form-control">+</button>' +
+                                 '<button type="button"  onclick="NewRow('+dayid+')" class="btn btn-default form-control">+</button>' +
                        '</div>'+
                        '<div class="col-md-1">'+
                                   '<label>Delete</label>'+
-                                  '<button  id="'+i+'" type="buton" onclick="deleteRow(this,this.id)" class="btn btn-default form-control">-</button>'+
+                                  '<button  id="'+dayid+i+'" type="buton" onclick="deleteRow(this,this.id,'+dayid+')" class="btn btn-default form-control">-</button>'+
                        '</div>'+
                   '</div>';
-        $('#customTimeCardBody').append(row);
+        var cardBodyid = "#customTimeCardBody" + dayid;
+        $(cardBodyid).append(row);
         
         }
-    var deleteRow=function(btn,id){
+    var deleteRow=function(btn,id,dayid){
         var integerNumber = parseInt(id, 10);
         for (var j = integerNumber + 1; j <= i; j++)
         {
-            var deleteid = document.getElementById(j);
-            var firstElement = document.getElementById(j+'s');
-            var secondElement = document.getElementById(j+'e');
+            var id=dayid + j;
+            console.log(id);
+            var dayElement = document.getElementById(dayid+j+'d');
+            var deleteid = document.getElementById(dayid+j);
+            var firstElement = document.getElementById(dayid+j+'s');
+            var secondElement = document.getElementById(dayid+j+'e');
             if (firstElement && secondElement) {
-                deleteid.id=j-1;
-                firstElement.id=j-1+'s';
-                secondElement.id = j-1+'e';
-                firstElement.name = "manageSundayMultipleTimes["+(j-1)+"].SunStartDateTime";
-                secondElement.name = "manageSundayMultipleTimes["+(j-1)+"].SunEndDateTime";
+                deleteid.id=dayid+(j-1);
+                firstElement.id=dayid+(j-1+'s');
+                secondElement.id = dayid+(j-1+'e');
+                dayElement.id = dayid + (j - 1 + 'd');
+                firstElement.name = "CustomTimings[" + (j - 1) + "].StartTime";
+                secondElement.name = "CustomTimings[" + (j - 1) + "].EndTime";
+                dayElement.name = "CustomTimings[" + (j - 1) + "].Dayid";
                 }
         }
         var row = btn.parentNode.parentNode;
